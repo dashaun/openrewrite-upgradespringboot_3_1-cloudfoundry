@@ -1,0 +1,9 @@
+---
+applications:
+  - name: springnative
+    instances: 1
+    memory: 256mb
+    stack: cflinuxfs4
+    buildpacks:
+      - binary_buildpack
+    command: ./demo-linux
