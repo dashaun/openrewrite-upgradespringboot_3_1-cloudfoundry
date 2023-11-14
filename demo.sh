@@ -14,6 +14,12 @@ function talkingPoint() {
   clear
 }
 
+function cleanupCF {
+  cf delete -f -r springj8
+  cf delete -f -r springj17
+  cf delete -f -r springnative
+}
+
 # Initialize SDKMAN and install required Java versions
 function initSDKman() {
   local sdkman_init="${SDKMAN_DIR:-$HOME/.sdkman}/bin/sdkman-init.sh"
@@ -25,7 +31,7 @@ function initSDKman() {
   fi
   sdk update
   sdk install java 8.0.392-librca
-  sdk install java 21.0.1-graalce
+  sdk install java 17.0.9-librca
 }
 
 # Prepare the working directory
@@ -43,10 +49,10 @@ function useJava8 {
   pei "java -version" 
 }
 
-# Switch to Java 21 and display version
-function useJava21 {
+# Switch to Java 17 and display version
+function useJava17 {
   displayMessage "Switch to Java 21 for Spring Boot 3"
-  pei "sdk use java 21.0.1-graalce"
+  pei "sdk use java 17.0.9-librca"
   pei "java -version"
 }
 
@@ -183,6 +189,11 @@ function statsSoFarTable {
   printf "%-35s %-25s %-15s %s \n" "Spring Boot 3.1 with AOT, native" "$(startupTime 'nativeWith3.1.log')" "$MEM3" "$PERC3%"
 
   echo "--------------------------------------------------------------------------------------------"
+  echo ""
+  cf app springj8
+  cf app springj17
+  cf app springnative
+
 }
 
 # Display Docker image statistics
@@ -190,7 +201,13 @@ function imageStats {
   pei "docker images | grep demo"
 }
 
+# CF Push
+function cfPush {
+  pei "cf push -f $1"
+}
+
 # Main execution flow
+cleanupCF
 initSDKman
 init
 useJava8
@@ -203,11 +220,13 @@ validateApp
 talkingPoint
 showMemoryUsage "$(jps | grep 'DemoApplication' | cut -d ' ' -f 1)" java8with2.6.log2
 talkingPoint
+cfPush ../manifest-java8.yml
+talkingPoint
 springBootStop
 talkingPoint
 rewriteApplication
 talkingPoint
-useJava21
+useJava17
 talkingPoint
 springBootStart java21with3.1.log
 talkingPoint
@@ -216,6 +235,8 @@ talkingPoint
 showMemoryUsage "$(jps | grep 'DemoApplication' | cut -d ' ' -f 1)" java21with3.1.log2
 talkingPoint
 springBootStop
+talkingPoint
+cfPush ../manifest-java17.yml
 talkingPoint
 buildNative
 talkingPoint
@@ -226,6 +247,8 @@ talkingPoint
 showMemoryUsage "$(pgrep demo)" nativeWith3.1.log2
 talkingPoint
 stopNative
+talkingPoint
+cfPush ../manifest-native.yml
 talkingPoint
 #statsSoFar
 statsSoFarTable
