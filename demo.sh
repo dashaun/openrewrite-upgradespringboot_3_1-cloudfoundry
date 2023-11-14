@@ -203,7 +203,9 @@ function imageStats {
 
 # CF Push
 function cfPush {
+  pei "cd .."
   pei "cf push -f $1"
+  pei "cd upgrade-example"
 }
 
 # Main execution flow
@@ -220,7 +222,7 @@ validateApp
 talkingPoint
 showMemoryUsage "$(jps | grep 'DemoApplication' | cut -d ' ' -f 1)" java8with2.6.log2
 talkingPoint
-cfPush ../manifest-java8.yml
+cfPush manifest-java8.yml
 talkingPoint
 springBootStop
 talkingPoint
@@ -236,7 +238,7 @@ showMemoryUsage "$(jps | grep 'DemoApplication' | cut -d ' ' -f 1)" java21with3.
 talkingPoint
 springBootStop
 talkingPoint
-cfPush ../manifest-java17.yml
+cfPush manifest-java17.yml
 talkingPoint
 buildNative
 talkingPoint
@@ -248,7 +250,7 @@ showMemoryUsage "$(pgrep demo)" nativeWith3.1.log2
 talkingPoint
 stopNative
 talkingPoint
-cfPush ../manifest-native.yml
+cfPush manifest-native.yml
 talkingPoint
 #statsSoFar
 statsSoFarTable
