@@ -51,7 +51,7 @@ function useJava8 {
 
 # Switch to Java 17 and display version
 function useJava17 {
-  displayMessage "Switch to Java 21 for Spring Boot 3"
+  displayMessage "Switch to Java 17 for Spring Boot 3"
   pei "sdk use java 17.0.9-librca"
   pei "java -version"
 }
@@ -189,10 +189,11 @@ function statsSoFarTable {
   printf "%-35s %-25s %-15s %s \n" "Spring Boot 3.1 with AOT, native" "$(startupTime 'nativeWith3.1.log')" "$MEM3" "$PERC3%"
 
   echo "--------------------------------------------------------------------------------------------"
-  echo ""
-  cf app springj8
-  cf app springj17
-  cf app springnative
+  echo "Same apps running on Cloud Foundry"
+  echo "--------------------------------------------------------------------------------------------"
+  cf app springj8 | grep "#0"
+  cf app springj17 | grep "#0"
+  cf app springnative | grep "#0"
 
 }
 
@@ -222,9 +223,9 @@ validateApp
 talkingPoint
 showMemoryUsage "$(jps | grep 'DemoApplication' | cut -d ' ' -f 1)" java8with2.6.log2
 talkingPoint
-cfPush manifest-java8.yml
-talkingPoint
 springBootStop
+talkingPoint
+cfPush manifest-java8.yml
 talkingPoint
 rewriteApplication
 talkingPoint
