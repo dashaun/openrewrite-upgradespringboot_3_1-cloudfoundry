@@ -59,7 +59,7 @@ function useJava17 {
 # Create a simple Spring Boot application
 function cloneApp {
   displayMessage "Clone a Spring Boot 2.6.0 application"
-  pei "git clone https://github.com/dashaun/hello-spring-boot-2-6.git"
+  pei "git clone https://github.com/dashaun/hello-spring-boot-2-6.git ./"
 }
 
 # Start the Spring Boot application
@@ -138,17 +138,17 @@ function statsSoFar {
   displayMessage "Comparison of memory usage and startup times"
   echo ""
   echo "Spring Boot 2.6 with Java 8"
-  grep -o 'Started DemoApplication in .*' < java8with2.6.log
+  grep -o 'Started HelloSpringApplication in .*' < java8with2.6.log
   echo "The process was using $(cat java8with2.6.log2) megabytes"
   echo ""
   echo ""
   echo "Spring Boot 3.1 with Java 21"
-  grep -o 'Started DemoApplication in .*' < java21with3.1.log
+  grep -o 'Started HelloSpringApplication in .*' < java21with3.1.log
   echo "The process was using $(cat java21with3.1.log2) megabytes"
   echo ""
   echo ""
   echo "Spring Boot 3.1 with AOT processing, native image"
-  grep -o 'Started DemoApplication in .*' < nativeWith3.1.log
+  grep -o 'Started HelloSpringApplication in .*' < nativeWith3.1.log
   echo "The process was using $(cat nativeWith3.1.log2) megabytes"
   echo ""
   echo ""
@@ -170,18 +170,18 @@ function statsSoFarTable {
 
   # Spring Boot 2.6 with Java 8
   #STARTUP1=$(sed -nE 's/.* in ([0-9]+\.[0-9]+) seconds.*/\1/p' < java8with2.6.log)
-  #STARTUP1=$(grep -o 'Started DemoApplication in .*' < java8with2.6.log)
+  #STARTUP1=$(grep -o 'Started HelloSpringApplication in .*' < java8with2.6.log)
   MEM1=$(cat java8with2.6.log2)
   printf "%-35s %-25s %-15s %s\n" "Spring Boot 2.6 with Java 8" "$(startupTime 'java8with2.6.log')" "$MEM1" "-"
 
   # Spring Boot 3.1 with Java 21
-  #STARTUP2=$(grep -o 'Started DemoApplication in .*' < java21with3.1.log)
+  #STARTUP2=$(grep -o 'Started HelloSpringApplication in .*' < java21with3.1.log)
   MEM2=$(cat java21with3.1.log2)
   PERC2=$(bc <<< "scale=2; 100 - ${MEM2}/${MEM1}*100")
   printf "%-35s %-25s %-15s %s \n" "Spring Boot 3.1 with Java 21" "$(startupTime 'java21with3.1.log')" "$MEM2" "$PERC2%"
 
   # Spring Boot 3.1 with AOT processing, native image
-  #STARTUP3=$(grep -o 'Started DemoApplication in .*' < nativeWith3.1.log)
+  #STARTUP3=$(grep -o 'Started HelloSpringApplication in .*' < nativeWith3.1.log)
   MEM3=$(cat nativeWith3.1.log2)
   PERC3=$(bc <<< "scale=2; 100 - ${MEM3}/${MEM1}*100")
   printf "%-35s %-25s %-15s %s \n" "Spring Boot 3.1 with AOT, native" "$(startupTime 'nativeWith3.1.log')" "$MEM3" "$PERC3%"
@@ -219,7 +219,7 @@ springBootStart java8with2.6.log
 talkingPoint
 validateApp
 talkingPoint
-showMemoryUsage "$(jps | grep 'DemoApplication' | cut -d ' ' -f 1)" java8with2.6.log2
+showMemoryUsage "$(jps | grep 'HelloSpringApplication' | cut -d ' ' -f 1)" java8with2.6.log2
 talkingPoint
 springBootStop
 talkingPoint
@@ -233,7 +233,7 @@ springBootStart java21with3.1.log
 talkingPoint
 validateApp
 talkingPoint
-showMemoryUsage "$(jps | grep 'DemoApplication' | cut -d ' ' -f 1)" java21with3.1.log2
+showMemoryUsage "$(jps | grep 'HelloSpringApplication' | cut -d ' ' -f 1)" java21with3.1.log2
 talkingPoint
 springBootStop
 talkingPoint
