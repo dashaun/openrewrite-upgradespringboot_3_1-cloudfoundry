@@ -2,7 +2,7 @@
 applications:
   - name: springj8
     instances: 1
-    path: ./upgrade-example/target/demo-0.0.1-SNAPSHOT.jar
+    path: ./upgrade-example/target/hello-spring-0.0.1-SNAPSHOT.jar
     buildpacks:
       - java_buildpack_offline
     env:
