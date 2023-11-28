@@ -57,11 +57,9 @@ function useJava17 {
 }
 
 # Create a simple Spring Boot application
-function createAppWithInitializr {
-  displayMessage "Create a Spring Boot 2.6.0 application"
-  pei "export SPRING_BOOT_VERSION=2.6.0"
-  pei "export DEPENDENCIES=web,actuator"
-  pei "curl https://start.spring.io/starter.tgz -d dependencies=$DEPENDENCIES -d javaVersion=8 -d bootVersion=$SPRING_BOOT_VERSION -d type=maven-project | tar -xzf - || exit"
+function cloneApp {
+  displayMessage "Clone a Spring Boot 2.6.0 application"
+  pei "git clone https://github.com/dashaun/hello-spring-boot-2-6.git"
 }
 
 # Start the Spring Boot application
@@ -215,7 +213,7 @@ initSDKman
 init
 useJava8
 talkingPoint
-createAppWithInitializr
+cloneApp
 talkingPoint
 springBootStart java8with2.6.log
 talkingPoint
