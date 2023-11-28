@@ -105,13 +105,13 @@ function buildNative {
 # Start the native image
 function startNative {
   displayMessage "Start the native image"
-  pei "./target/demo 2>&1 | tee nativeWith3.1.log &"
+  pei "./target/hello-spring 2>&1 | tee nativeWith3.1.log &"
 }
 
 # Stop the native image
 function stopNative {
   displayMessage "Stop the native image"
-  local npid=$(pgrep demo)
+  local npid=$(pgrep hello-spring)
   pei "kill -9 $npid"
 }
 
@@ -245,7 +245,7 @@ startNative
 talkingPoint
 validateApp
 talkingPoint
-showMemoryUsage "$(pgrep demo)" nativeWith3.1.log2
+showMemoryUsage "$(pgrep hello-spring)" nativeWith3.1.log2
 talkingPoint
 stopNative
 talkingPoint
